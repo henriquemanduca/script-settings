@@ -26,11 +26,10 @@ Other distributions might need other commands.
 * google chrome (stable current)
 * docker
 * gnome-boxes
-* brave-browser
+* brave-browser (stable current)
 * font-manager
 * zsh
-* ca-certificates
-* docker-ce
+* ca-certificates, docker-ce
 * Vs Code (1.49)
 * DBeaver (7.2.1)
 

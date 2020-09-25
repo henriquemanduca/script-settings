@@ -16,6 +16,15 @@ PROGRAMS=(
   docker-ce
 )
 
+sudo apt install apt-transport-https curl wget -y
+
+## Download and installation ##
+mkdir "$DOWNLOADS"
+wget -c "$URL_GOOGLE_CHROME"  -P "$DOWNLOADS"
+wget -c "$URL_SIMPLE_NOTE"    -P "$DOWNLOADS"
+wget -c "$URL_DBEAVER"        -P "$DOWNLOADS"
+wget -c "$VS_CODE"            -P "$DOWNLOADS"
+
 # ----------------------------- REQUIREMENTS ----------------------------- #
 
 ## Removing any locks on the apt ##
@@ -25,21 +34,19 @@ sudo rm /var/cache/apt/archives/lock
 timedatectl set-local-rtc 1 --adjust-system-clock
 
 # ----------------------------- REMOVE ----------------------------- #
-echo ""
-echo ""
-echo "Remove libreoffice"
+echo ">>>> Remove libreoffice"
 sudo apt-get remove --purge libreoffice* -y
 
-sudo apt clean
-sudo apt-get autoremove
+sudo apt clean -y
+sudo apt-get autoremove -y
 
-echo "Install Fira Code"
+sudo apt update && sudo apt upgrade -y
+clear
+
+echo ">>>> Install Fira Code"
 sudo apt install fonts-firacode
 
-echo ""
-echo ""
 ## Adding third-party repositories##
-sudo apt install apt-transport-https curl wget
 
 # add Typora's repository
 wget -qO - https://typora.io/linux/public-key.asc | sudo apt-key add -
@@ -56,16 +63,7 @@ echo ""
 sudo apt update -y
 sudo apt upgrade -y
 
-echo ""
-echo ""
-## Download and installation ##
-mkdir "$DOWNLOADS"
-wget -c "$URL_GOOGLE_CHROME"  -P "$DOWNLOADS"
-wget -c "$URL_SIMPLE_NOTE"    -P "$DOWNLOADS"
-wget -c "$URL_DBEAVER"        -P "$DOWNLOADS"
 
-echo ""
-echo ""
 ## Installing .deb packages downloaded in the previous session ##
 sudo dpkg -i $DOWNLOADS/*.deb
 sudo apt-get -f install -y
@@ -83,17 +81,10 @@ for program_name in ${PROGRAMS[@]}; do
   fi
 done
 
-echo ""
-echo ""
-
-sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/install.sh)"
-git clone https://github.com/lukechilds/zsh-nvm ~/.oh-my-zsh/custom/plugins/zsh-nvm
-
-
 # ----------------------------- AFTER-INSTALLATION ----------------------------- #
 ## Finalization, update and cleaning ##
-sudo apt update && sudo apt dist-upgrade -y
+sudo apt update -y
+sudo apt dist-upgrade -y
 
 sudo apt autoclean
 sudo apt autoremove -y
@@ -103,8 +94,7 @@ sudo apt autoremove -y
 sudo usermod -aG docker ${USER} && su - ${USER}
 
 ## SSH
-echo ""
-echo "Generate key ssh"
+echo ">>>> Generate key ssh"
 ssh-keygen -t rsa -b 4096 -C "henriquemanduca@live.com"
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_rsa
