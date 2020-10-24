@@ -1,4 +1,4 @@
-# script-settings
+# Linux script-settings
 A Ubuntu based script for default settings.
 ![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)
 
